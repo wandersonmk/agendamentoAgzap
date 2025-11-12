@@ -19,7 +19,7 @@ if (process.client) {
     
     if (hasSession) {
       console.log('[Auth Callback] Sessão confirmada, redirecionando para dashboard')
-      await navigateTo('/pedidos')
+      await navigateTo('/agendamentos')
     } else {
       console.log('[Auth Callback] Falha ao confirmar sessão, redirecionando para login')
       await navigateTo('/login')
