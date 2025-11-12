@@ -85,7 +85,8 @@
               <tr class="border-b border-border">
                 <th class="text-left py-2 px-3 font-medium text-muted-foreground text-xs">Nome</th>
                 <th class="text-left py-2 px-3 font-medium text-muted-foreground text-xs">Telefone</th>
-                <th class="text-left py-2 px-3 font-medium text-muted-foreground text-xs">Empresa</th>
+                <th class="text-left py-2 px-3 font-medium text-muted-foreground text-xs">Email</th>
+                <th class="text-left py-2 px-3 font-medium text-muted-foreground text-xs">Observações</th>
                 <th class="text-right py-2 px-3 font-medium text-muted-foreground text-xs">Ações</th>
               </tr>
             </thead>
@@ -110,9 +111,14 @@
                   <span class="text-foreground text-sm">{{ cliente.telefone }}</span>
                 </td>
                 
-                <!-- Empresa do cliente -->
+                <!-- Email do cliente -->
                 <td class="py-3 px-3">
-                  <span class="text-foreground font-medium text-sm">{{ cliente.empresa }}</span>
+                  <span class="text-foreground text-sm">{{ cliente.email || '-' }}</span>
+                </td>
+                
+                <!-- Observações -->
+                <td class="py-3 px-3">
+                  <span class="text-muted-foreground text-xs">{{ cliente.observacoes ? (cliente.observacoes.length > 30 ? cliente.observacoes.substring(0, 30) + '...' : cliente.observacoes) : '-' }}</span>
                 </td>
                 
                 <!-- Botões de ação -->
@@ -328,7 +334,7 @@ const exportToPDF = async () => {
     doc.text('#', 25, yPosition - 2)
     doc.text('Nome', 40, yPosition - 2)
     doc.text('Telefone', 100, yPosition - 2)
-    doc.text('Empresa', 150, yPosition - 2)
+    doc.text('Email', 145, yPosition - 2)
 
     // Resetar cor do texto para preto
     doc.setTextColor(0, 0, 0)
@@ -351,7 +357,7 @@ const exportToPDF = async () => {
         doc.text('#', 25, yPosition - 2)
         doc.text('Nome', 40, yPosition - 2)
         doc.text('Telefone', 100, yPosition - 2)
-        doc.text('Empresa', 150, yPosition - 2)
+        doc.text('Email', 145, yPosition - 2)
         doc.setTextColor(0, 0, 0)
         doc.setFontSize(10)
         doc.setFont('helvetica', 'normal')
@@ -368,7 +374,7 @@ const exportToPDF = async () => {
       doc.text((index + 1).toString(), 25, yPosition)
       doc.text(cliente.nome, 40, yPosition)
       doc.text(cliente.telefone, 100, yPosition)
-      doc.text(cliente.empresa || 'Não informado', 150, yPosition)
+      doc.text(cliente.email || '-', 145, yPosition)
       
       yPosition += 12
     })
@@ -407,7 +413,7 @@ const exportToExcel = async () => {
       [`Total de registros: ${clientes.value.length}`],
       [], // Linha vazia
       // Cabeçalho da tabela
-      ['#', 'Nome', 'Telefone', 'Loja', 'CNPJ', 'Data Abertura', 'Hora Abertura', 'Motivo', 'Empresa']
+      ['#', 'Nome', 'Telefone', 'Email', 'Observações', 'Data Cadastro', 'Hora Cadastro', 'Status']
     ]
 
     // Adicionar dados dos clientes
@@ -416,12 +422,11 @@ const exportToExcel = async () => {
         (index + 1).toString(), // Numeração
         cliente.nome,
         cliente.telefone,
-        'Loja Centro', // Valor padrão ou pode vir do cliente se existir
-        '12.345.678/0001-90', // Valor padrão ou pode vir do cliente se existir
+        cliente.email || '-',
+        cliente.observacoes || '-',
         new Date(cliente.created_at).toLocaleDateString('pt-BR'),
         new Date(cliente.created_at).toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit' }),
-        'Cliente cadastrado', // Motivo padrão
-        cliente.empresa || 'Não informado'
+        cliente.ativo ? 'Ativo' : 'Inativo'
       ])
     })
 
@@ -432,14 +437,13 @@ const exportToExcel = async () => {
     // Definir larguras das colunas
     const columnWidths = [
       { wch: 5 },  // #
-      { wch: 20 }, // Nome
+      { wch: 25 }, // Nome
       { wch: 15 }, // Telefone
-      { wch: 15 }, // Loja
-      { wch: 20 }, // CNPJ
-      { wch: 12 }, // Data Abertura
-      { wch: 12 }, // Hora Abertura
-      { wch: 20 }, // Motivo
-      { wch: 15 }  // Empresa
+      { wch: 30 }, // Email
+      { wch: 35 }, // Observações
+      { wch: 12 }, // Data Cadastro
+      { wch: 12 }, // Hora Cadastro
+      { wch: 10 }  // Status
     ]
     worksheet['!cols'] = columnWidths
 
@@ -448,10 +452,10 @@ const exportToExcel = async () => {
     
     // Mesclar células do título principal
     worksheet['!merges'] = [
-      { s: { r: 0, c: 0 }, e: { r: 0, c: 8 } }, // Wise Digital - Sistema de Relatórios
-      { s: { r: 1, c: 0 }, e: { r: 1, c: 8 } }, // Relatórios de Clientes
-      { s: { r: 2, c: 0 }, e: { r: 2, c: 8 } }, // Gerado em
-      { s: { r: 3, c: 0 }, e: { r: 3, c: 8 } }  // Total de registros
+      { s: { r: 0, c: 0 }, e: { r: 0, c: 7 } }, // Wise Digital - Sistema de Relatórios
+      { s: { r: 1, c: 0 }, e: { r: 1, c: 7 } }, // Relatórios de Clientes
+      { s: { r: 2, c: 0 }, e: { r: 2, c: 7 } }, // Gerado em
+      { s: { r: 3, c: 0 }, e: { r: 3, c: 7 } }  // Total de registros
     ]
 
     // Adicionar worksheet ao workbook
