@@ -81,7 +81,7 @@ async function handleRegister() {
     
     // Sucesso: mostrar modal de confirmação de email
     showEmailModal.value = true
-    toast?.success('Conta criada com sucesso!')
+    toast?.success('Conta criada com sucesso! Verifique seu email.')
     
   } catch (error) {
     // Erro já é tratado no composable e mostrado via errorMessage

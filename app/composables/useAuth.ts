@@ -44,6 +44,7 @@ export function useAuth() {
         email,
         password,
         options: {
+          emailRedirectTo: `${window.location.origin}/auth/callback`,
           data: {
             name: name,
             company_name: companyName
