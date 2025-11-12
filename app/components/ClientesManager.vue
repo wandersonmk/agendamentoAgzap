@@ -214,6 +214,12 @@ const {
   clearError 
 } = useClientes()
 
+// Toast
+const toast = await useToastSafe()
+
+// Função de recarregar da página pai
+const recarregarClientesPai = inject('recarregarClientes', null) as any
+
 // Estado para modal de confirmação de exclusão
 const clienteParaExcluir = ref<any>(null)
 
@@ -263,10 +269,22 @@ const cancelarExclusao = () => {
 
 // Função para excluir cliente
 const excluirCliente = async () => {
-  if (clienteParaExcluir.value) {
-    await deleteCliente(clienteParaExcluir.value.id)
+  if (!clienteParaExcluir.value) return
+  
+  try {
+    const sucesso = await deleteCliente(clienteParaExcluir.value.id)
+    if (sucesso) {
+      toast?.success('Cliente excluído com sucesso!')
+    }
+  } catch (error: any) {
+    // Exibe a mensagem de erro vinda do composable
+    toast?.error(error?.message || 'Erro ao excluir cliente')
+  } finally {
     clienteParaExcluir.value = null
-    await fetchClientes() // Recarregar lista
+    // Recarrega a lista de clientes (da página pai)
+    if (recarregarClientesPai) {
+      await recarregarClientesPai()
+    }
   }
 }
 

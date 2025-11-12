@@ -27,6 +27,10 @@ const showModal = ref(false)
 const showModalNovoCliente = ref(false)
 const showModalNovoAtendente = ref(false)
 
+// Estado do modal de confirmação de exclusão
+const showModalConfirmarExclusao = ref(false)
+const agendamentoParaExcluir = ref<string | null>(null)
+
 // Listas para os selects
 const clientes = ref<any[]>([])
 const atendentes = ref<any[]>([])
@@ -259,15 +263,27 @@ const salvarAgendamento = async () => {
 }
 
 // Deletar agendamento
-const confirmarExclusao = async (id: string) => {
-  if (confirm('Tem certeza que deseja excluir este agendamento?')) {
-    try {
-      await deleteAgendamento(id)
-      toast?.success('Agendamento excluído com sucesso!')
-    } catch (error) {
-      toast?.error('Erro ao excluir agendamento')
-      console.error('Erro:', error)
-    }
+const confirmarExclusao = (id: string) => {
+  agendamentoParaExcluir.value = id
+  showModalConfirmarExclusao.value = true
+}
+
+const cancelarExclusao = () => {
+  showModalConfirmarExclusao.value = false
+  agendamentoParaExcluir.value = null
+}
+
+const excluirAgendamento = async () => {
+  if (!agendamentoParaExcluir.value) return
+  
+  try {
+    await deleteAgendamento(agendamentoParaExcluir.value)
+    toast?.success('Agendamento excluído com sucesso!')
+    showModalConfirmarExclusao.value = false
+    agendamentoParaExcluir.value = null
+  } catch (error) {
+    toast?.error('Erro ao excluir agendamento')
+    console.error('Erro:', error)
   }
 }
 
@@ -601,6 +617,50 @@ const formatarTelefone = (telefone: string) => {
         @close="showModalNovoAtendente = false"
         @atendenteCriado="aoAtendenteCriado($event)"
       />
+
+      <!-- Modal de Confirmação de Exclusão -->
+      <div v-if="showModalConfirmarExclusao" class="fixed inset-0 z-[70] overflow-y-auto" @click.self="cancelarExclusao">
+        <div class="flex items-center justify-center min-h-screen px-4 pt-4 pb-20 text-center sm:p-0">
+          <!-- Overlay -->
+          <div class="fixed inset-0 transition-opacity bg-black/60" @click="cancelarExclusao"></div>
+
+          <!-- Modal -->
+          <div class="relative inline-block w-full max-w-md p-6 my-8 overflow-hidden text-left align-middle transition-all transform bg-card shadow-xl rounded-xl border border-border">
+            <!-- Ícone de Alerta -->
+            <div class="flex items-center justify-center w-16 h-16 mx-auto mb-4 bg-destructive/10 rounded-full">
+              <svg class="w-8 h-8 text-destructive" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"/>
+              </svg>
+            </div>
+
+            <!-- Título e Descrição -->
+            <div class="text-center mb-6">
+              <h3 class="text-xl font-bold text-foreground mb-2">Excluir Agendamento</h3>
+              <p class="text-sm text-muted-foreground">
+                Tem certeza que deseja excluir este agendamento? Esta ação não pode ser desfeita.
+              </p>
+            </div>
+
+            <!-- Botões -->
+            <div class="flex items-center justify-end space-x-3">
+              <button
+                @click="cancelarExclusao"
+                type="button"
+                class="px-4 py-2 border border-border rounded-lg text-foreground hover:bg-muted transition-colors"
+              >
+                Cancelar
+              </button>
+              <button
+                @click="excluirAgendamento"
+                type="button"
+                class="px-4 py-2 bg-destructive text-destructive-foreground rounded-lg hover:bg-destructive/90 transition-colors"
+              >
+                Sim, Excluir
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
 
       <!-- Modal de Novo Agendamento -->
       <div v-if="showModal" class="fixed inset-0 z-50 overflow-y-auto" @click.self="fecharModal">

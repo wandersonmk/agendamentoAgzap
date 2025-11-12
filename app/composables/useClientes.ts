@@ -146,6 +146,27 @@ export const useClientes = () => {
       isLoading.value = true
       error.value = null
 
+      // Verificar se existem agendamentos pendentes para este cliente
+      const { data: agendamentosPendentes, error: checkError } = await supabase
+        .from('agendamentos')
+        .select('id')
+        .eq('cliente_id', clienteId)
+        .eq('status', 'pendente')
+
+      if (checkError) {
+        console.error('❌ Erro ao verificar agendamentos:', checkError)
+        throw new Error('Erro ao verificar agendamentos do cliente')
+      }
+
+      // Se houver agendamentos pendentes, não permite excluir
+      if (agendamentosPendentes && agendamentosPendentes.length > 0) {
+        const mensagem = `Não é possível excluir este cliente. Existem ${agendamentosPendentes.length} agendamento(s) pendente(s) associado(s) a ele.`
+        console.warn('⚠️', mensagem)
+        error.value = mensagem
+        throw new Error(mensagem)
+      }
+
+      // Se não houver agendamentos pendentes, pode excluir
       const { error: deleteError } = await supabase
         .from('clientes')
         .delete()
@@ -154,7 +175,7 @@ export const useClientes = () => {
       if (deleteError) {
         console.error('❌ Erro ao deletar cliente:', deleteError)
         error.value = `Erro ao deletar cliente: ${deleteError.message}`
-        return false
+        throw new Error(`Erro ao deletar cliente: ${deleteError.message}`)
       }
 
       console.log('✅ Cliente deletado com sucesso')
@@ -163,10 +184,10 @@ export const useClientes = () => {
       await fetchClientes()
       return true
       
-    } catch (err) {
+    } catch (err: any) {
       console.error('💥 Erro inesperado ao deletar cliente:', err)
-      error.value = 'Erro inesperado ao deletar cliente'
-      return false
+      error.value = err?.message || 'Erro inesperado ao deletar cliente'
+      throw err
     } finally {
       isLoading.value = false
     }

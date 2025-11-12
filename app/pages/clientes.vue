@@ -5,52 +5,63 @@ definePageMeta({
   layout: 'dashboard'
 })
 
-import { useClientes } from '../composables/useClientes'
-
 const isLoading = ref(true)
 const error = ref('')
-const isClient = typeof window !== 'undefined'
 const showModalNovoCliente = ref(false)
+const clientes = ref<any[]>([])
 
-let clientes = ref([])
-let fetchClientesFunc: (() => Promise<void>) | null = null
-
-if (isClient) {
-  const { clientes: clientesData, fetchClientes } = useClientes()
-  clientes = clientesData
-  fetchClientesFunc = fetchClientes
+// Função para carregar clientes
+const carregarClientes = async () => {
+  if (!process.client) return
   
-  onMounted(async () => {
+  try {
+    const supabase = useSupabaseClient()
+    
     isLoading.value = true
-    try {
-      await fetchClientes()
-    } catch (e) {
-      error.value = 'Erro ao carregar clientes.'
-    }
+    error.value = ''
+    
+    // Busca clientes diretamente
+    const { data, error: fetchError } = await supabase
+      .from('clientes')
+      .select('*')
+      .order('created_at', { ascending: false })
+    
+    if (fetchError) throw fetchError
+    
+    clientes.value = data || []
+  } catch (e) {
+    error.value = 'Erro ao carregar clientes.'
+    console.error(e)
+  } finally {
     isLoading.value = false
-  })
-} else {
-  isLoading.value = false
-}
-
-// Quando cliente é criado, recarregar lista
-const aoClienteCriado = async () => {
-  showModalNovoCliente.value = false
-  if (fetchClientesFunc) {
-    await fetchClientesFunc()
   }
 }
+
+// Carrega dados no mount
+onMounted(async () => {
+  await carregarClientes()
+})
+
+// Quando cliente é criado, recarregar a página
+const aoClienteCriado = async () => {
+  showModalNovoCliente.value = false
+  // Recarrega a página para mostrar o novo cliente
+  window.location.reload()
+}
+
+// Disponibilizar função globalmente para o componente filho
+provide('recarregarClientes', carregarClientes)
 </script>
 
 <template>
   <div>
-    <!-- Sempre mostra loading até o client buscar os dados -->
+    <!-- Loading enquanto carrega -->
     <AppLoading 
-      v-if="isLoading || !isClient" 
+      v-if="isLoading" 
       title="Carregando Clientes"
       description="Preparando visão geral dos clientes..."
     />
-    <!-- Conteúdo só aparece após carregamento client-side -->
+    <!-- Conteúdo após carregamento -->
     <div v-else class="space-y-6">
       <!-- Header com botão de adicionar -->
       <div class="flex items-center justify-between">

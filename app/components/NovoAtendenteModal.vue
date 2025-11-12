@@ -32,9 +32,11 @@
           <div>
             <label class="block text-sm font-medium text-foreground mb-2">Telefone *</label>
             <input
-              v-model="form.telefone"
+              v-model="telefoneFormatado"
+              @input="aplicarMascaraTelefone"
               type="tel"
               placeholder="(00) 00000-0000"
+              maxlength="15"
               class="w-full rounded-md bg-secondary text-foreground placeholder-muted-foreground border border-input px-3 py-2 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary"
               required
             />
@@ -98,6 +100,7 @@ const toast = await useToastSafe()
 const supabase = useSupabaseClient()
 
 const isLoading = ref(false)
+const telefoneFormatado = ref('')
 const form = ref({
   nome: '',
   telefone: '',
@@ -105,6 +108,30 @@ const form = ref({
   especialidade: '',
   ativo: true
 })
+
+// Função para aplicar máscara de telefone
+const aplicarMascaraTelefone = (event: Event) => {
+  const input = event.target as HTMLInputElement
+  let valor = input.value.replace(/\D/g, '') // Remove tudo que não é dígito
+  
+  // Limita a 11 dígitos
+  if (valor.length > 11) {
+    valor = valor.slice(0, 11)
+  }
+  
+  // Aplica a máscara
+  if (valor.length <= 10) {
+    // Formato: (00) 0000-0000
+    valor = valor.replace(/^(\d{2})(\d{4})(\d{0,4}).*/, '($1) $2-$3')
+  } else {
+    // Formato: (00) 00000-0000
+    valor = valor.replace(/^(\d{2})(\d{5})(\d{0,4}).*/, '($1) $2-$3')
+  }
+  
+  telefoneFormatado.value = valor
+  // Salva apenas os números no form
+  form.value.telefone = valor.replace(/\D/g, '')
+}
 
 const fechar = () => {
   limparFormulario()
@@ -119,6 +146,7 @@ const limparFormulario = () => {
     especialidade: '',
     ativo: true
   }
+  telefoneFormatado.value = ''
 }
 
 const salvar = async () => {

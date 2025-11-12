@@ -50,10 +50,50 @@ export function useAgendamentos() {
     error.value = null
 
     try {
+      // Buscar empresa_id do usuário logado
+      const { data: empresaIdData, error: empresaError } = await supabase
+        .rpc('get_user_empresa_id')
+
+      if (empresaError) {
+        console.error('❌ Erro ao buscar empresa_id:', empresaError)
+        throw new Error('Erro ao identificar sua empresa')
+      }
+
+      // Buscar dados do cliente
+      const { data: clienteData, error: clienteError } = await supabase
+        .from('clientes')
+        .select('nome, telefone')
+        .eq('id', agendamento.cliente_id)
+        .single()
+
+      if (clienteError || !clienteData) {
+        throw new Error('Cliente não encontrado')
+      }
+
+      // Buscar dados do atendente
+      const { data: atendenteData, error: atendenteError } = await supabase
+        .from('atendentes')
+        .select('nome, telefone')
+        .eq('id', agendamento.atendente_id)
+        .single()
+
+      if (atendenteError || !atendenteData) {
+        throw new Error('Atendente não encontrado')
+      }
+
       const { data, error: createError } = await supabase
         .from('agendamentos')
         .insert({
-          ...agendamento,
+          cliente_id: agendamento.cliente_id,
+          cliente_nome: clienteData.nome,
+          cliente_telefone: clienteData.telefone,
+          atendente_id: agendamento.atendente_id,
+          atendente_nome: atendenteData.nome,
+          atendente_telefone: atendenteData.telefone,
+          data_agendamento: agendamento.data_agendamento,
+          hora_agendamento: agendamento.hora_agendamento,
+          assunto: agendamento.assunto,
+          empresa_id: empresaIdData,
           status: agendamento.status || 'pendente'
         })
         .select(`
