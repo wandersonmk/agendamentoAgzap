@@ -166,7 +166,37 @@ export const useClientes = () => {
         throw new Error(mensagem)
       }
 
-      // Se não houver agendamentos pendentes, pode excluir
+      // Se não houver agendamentos pendentes, buscar agendamentos concluídos/cancelados
+      const { data: agendamentosFinalizados, error: finalizadosError } = await supabase
+        .from('agendamentos')
+        .select('id')
+        .eq('cliente_id', clienteId)
+        .in('status', ['concluido', 'cancelado'])
+
+      if (finalizadosError) {
+        console.error('❌ Erro ao buscar agendamentos finalizados:', finalizadosError)
+        throw new Error('Erro ao verificar agendamentos do cliente')
+      }
+
+      // Se houver agendamentos finalizados, excluí-los primeiro
+      if (agendamentosFinalizados && agendamentosFinalizados.length > 0) {
+        console.log(`🗑️ Excluindo ${agendamentosFinalizados.length} agendamento(s) finalizados...`)
+        
+        const { error: deleteAgendamentosError } = await supabase
+          .from('agendamentos')
+          .delete()
+          .eq('cliente_id', clienteId)
+          .in('status', ['concluido', 'cancelado'])
+
+        if (deleteAgendamentosError) {
+          console.error('❌ Erro ao excluir agendamentos:', deleteAgendamentosError)
+          throw new Error('Erro ao excluir agendamentos do cliente')
+        }
+
+        console.log('✅ Agendamentos finalizados excluídos com sucesso')
+      }
+
+      // Agora pode excluir o cliente
       const { error: deleteError } = await supabase
         .from('clientes')
         .delete()
