@@ -4,9 +4,9 @@
 
 // Meta tags para SEO
 useHead({
-  title: 'Obrigado - Wise Digital',
+  title: 'Obrigado - Agzap Agendamentos',
   meta: [
-    { name: 'description', content: 'Obrigado por se cadastrar no Wise Digital Gestão de Relatórios' }
+    { name: 'description', content: 'Obrigado por se cadastrar no Agzap Agendamentos' }
   ]
 })
 
