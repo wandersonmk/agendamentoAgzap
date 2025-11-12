@@ -4,26 +4,28 @@ definePageMeta({
   middleware: [] // Sem middleware para não bloquear o callback
 })
 
-const route = useRoute()
-const { reloadSession } = useAuth()
+// Executar apenas no cliente
+if (process.client) {
+  const { reloadSession } = useAuth()
 
-onMounted(async () => {
-  console.log('[Auth Callback] Processando confirmação de email...')
-  
-  // Aguardar um pouco para garantir que o token foi processado
-  await new Promise(resolve => setTimeout(resolve, 1000))
-  
-  // Recarregar a sessão para pegar o usuário autenticado
-  const hasSession = await reloadSession()
-  
-  if (hasSession) {
-    console.log('[Auth Callback] Sessão confirmada, redirecionando para dashboard')
-    await navigateTo('/pedidos')
-  } else {
-    console.log('[Auth Callback] Falha ao confirmar sessão, redirecionando para login')
-    await navigateTo('/login')
-  }
-})
+  onMounted(async () => {
+    console.log('[Auth Callback] Processando confirmação de email...')
+    
+    // Aguardar um pouco para garantir que o token foi processado
+    await new Promise(resolve => setTimeout(resolve, 1000))
+    
+    // Recarregar a sessão para pegar o usuário autenticado
+    const hasSession = await reloadSession()
+    
+    if (hasSession) {
+      console.log('[Auth Callback] Sessão confirmada, redirecionando para dashboard')
+      await navigateTo('/pedidos')
+    } else {
+      console.log('[Auth Callback] Falha ao confirmar sessão, redirecionando para login')
+      await navigateTo('/login')
+    }
+  })
+}
 </script>
 
 <template>
