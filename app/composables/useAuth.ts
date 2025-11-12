@@ -60,6 +60,7 @@ export function useAuth() {
 
       // 3. Criar usuário associado à empresa
       const { error: usuarioError } = await supabase.from('usuarios').insert({
+        id: data.user?.id, // ID do auth.users para passar na política RLS
         nome: name,
         empresa_id: empresaData.id,
         email: email,
