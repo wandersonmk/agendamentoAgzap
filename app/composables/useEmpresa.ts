@@ -16,31 +16,46 @@ export function useEmpresa() {
       
       if (!user?.id) {
         console.log('Usuário não está logado')
-        nomeEmpresa.value = null
+        nomeEmpresa.value = 'Sistema de Agendamentos'
         return
       }
 
       console.log('Buscando empresa para usuário:', user.id)
       
-      // Busca a empresa no banco
-      const { data, error } = await supabase
-        .from('empresas')
-        .select('nome')
-        .eq('usuario_id', user.id)
+      // Primeiro busca o usuario para pegar o empresa_id
+      const { data: usuarioData, error: usuarioError } = await supabase
+        .from('usuarios')
+        .select('empresa_id')
+        .eq('id', user.id)
         .single()
 
-      if (error) {
-        console.error('Erro ao buscar empresa:', error)
-        nomeEmpresa.value = null
+      if (usuarioError || !usuarioData?.empresa_id) {
+        console.error('Erro ao buscar usuario:', usuarioError)
+        nomeEmpresa.value = 'Sistema de Agendamentos'
         return
       }
 
-      console.log('Nome da empresa encontrado:', data?.nome)
-      nomeEmpresa.value = data?.nome || null
+      console.log('empresa_id encontrado:', usuarioData.empresa_id)
+
+      // Agora busca a empresa pelo empresa_id
+      const { data: empresaData, error: empresaError } = await supabase
+        .from('empresas')
+        .select('nome')
+        .eq('id', usuarioData.empresa_id)
+        .single()
+
+      if (empresaError) {
+        console.error('Erro ao buscar empresa:', empresaError)
+        nomeEmpresa.value = 'Sistema de Agendamentos'
+        return
+      }
+
+      console.log('Nome da empresa encontrado:', empresaData?.nome)
+      nomeEmpresa.value = empresaData?.nome || 'Sistema de Agendamentos'
       
     } catch (err) {
       console.error('Erro:', err)
-      nomeEmpresa.value = null
+      nomeEmpresa.value = 'Sistema de Agendamentos'
     } finally {
       isLoadingEmpresa.value = false
     }

@@ -11,7 +11,7 @@
               </svg>
             </div>
             <div class="hidden sm:block">
-              <h1 class="text-xl font-bold text-foreground">Agzap</h1>
+              <h1 class="text-xl font-bold text-foreground">{{ nomeEmpresa || 'Sistema de Agendamentos' }}</h1>
               <p class="text-xs text-muted-foreground">Gestão de Agendamentos</p>
             </div>
           </NuxtLink>
@@ -146,6 +146,9 @@ const mobileMenuOpen = ref(false)
 let toast: any
 let signOut: any
 
+// Busca nome da empresa
+const { nomeEmpresa, buscarNomeEmpresa } = useEmpresa()
+
 onMounted(async () => {
   toast = await useToastSafe()
   
@@ -153,6 +156,9 @@ onMounted(async () => {
   if (process.client) {
     const auth = useAuth()
     signOut = auth.signOut
+    
+    // Busca nome da empresa
+    await buscarNomeEmpresa()
   }
 })
 
