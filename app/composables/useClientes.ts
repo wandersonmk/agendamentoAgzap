@@ -32,12 +32,14 @@ export const useClientes = () => {
   const isLoading = ref(false)
   const error = ref<string | null>(null)
 
-  // Buscar todos os clientes (sem filtro por usuário)
+  // Buscar clientes da empresa do usuário logado
   const fetchClientes = async (): Promise<void> => {
     console.log('🔍 Iniciando busca de clientes...')
     isLoading.value = true
     error.value = null
     try {
+      // A RLS policy já filtra automaticamente por empresa_id
+      // mas vamos garantir buscando apenas clientes ativos da empresa
       const { data, error: clientesError }: PostgrestResponse<Cliente> = await supabase
         .from('clientes')
         .select('*')
