@@ -1,67 +1,75 @@
 <template>
-  <header class="bg-background border-b border-border shadow-sm">
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+  <header class="bg-background border-b border-border shadow-sm sticky top-0 z-50">
+    <div class="mx-auto px-4 sm:px-6 lg:px-8">
       <div class="flex justify-between items-center h-16">
         <!-- Logo da empresa -->
         <div class="flex-shrink-0 flex items-center">
-          <div class="flex items-center space-x-3">
-            <div class="w-8 h-8 bg-primary rounded-lg flex items-center justify-center">
-              <svg class="w-5 h-5 text-primary-foreground" fill="currentColor" viewBox="0 0 20 20">
-                <path d="M13 6a3 3 0 11-6 0 3 3 0 016 0zM18 8a2 2 0 11-4 0 2 2 0 014 0zM14 15a4 4 0 00-8 0v3h8v-3z"/>
+          <NuxtLink to="/" class="flex items-center space-x-3 hover:opacity-80 transition-opacity">
+            <div class="w-10 h-10 bg-primary rounded-lg flex items-center justify-center shadow-lg">
+              <svg class="w-6 h-6 text-primary-foreground" fill="currentColor" viewBox="0 0 20 20">
+                <path d="M10 2a6 6 0 00-6 6v3.586l-.707.707A1 1 0 004 14h12a1 1 0 00.707-1.707L16 11.586V8a6 6 0 00-6-6zM10 18a3 3 0 01-3-3h6a3 3 0 01-3 3z"/>
               </svg>
             </div>
             <div class="hidden sm:block">
-              <h1 class="text-xl font-semibold text-foreground">Agzap</h1>
-              <p class="text-xs text-muted-foreground">Gestão de Clientes</p>
+              <h1 class="text-xl font-bold text-foreground">Agzap</h1>
+              <p class="text-xs text-muted-foreground">Gestão de Agendamentos</p>
             </div>
-          </div>
+          </NuxtLink>
         </div>
 
-        <!-- Menu principal -->
-        <nav class="hidden md:flex space-x-8">
-          <button class="flex items-center px-3 py-2 rounded-md text-sm font-medium text-foreground hover:text-primary hover:bg-muted/50 transition-colors">
+        <!-- Menu principal - Desktop -->
+        <nav class="hidden md:flex items-center space-x-2">
+          <NuxtLink 
+            to="/"
+            class="flex items-center px-4 py-2 rounded-lg text-sm font-medium transition-colors"
+            :class="$route.path === '/' 
+              ? 'bg-primary text-primary-foreground shadow-sm' 
+              : 'text-foreground hover:text-primary hover:bg-muted/50'"
+          >
             <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 7v10a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2H5a2 2 0 00-2-2z"/>
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 5a2 2 0 012-2h4a2 2 0 012 2v0H8v0z"/>
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"/>
             </svg>
             Dashboard
-          </button>
+          </NuxtLink>
           
-          <button class="flex items-center px-3 py-2 rounded-md text-sm font-medium text-foreground hover:text-primary hover:bg-muted/50 transition-colors">
+          <NuxtLink 
+            to="/clientes"
+            class="flex items-center px-4 py-2 rounded-lg text-sm font-medium transition-colors"
+            :class="$route.path === '/clientes' 
+              ? 'bg-primary text-primary-foreground shadow-sm' 
+              : 'text-foreground hover:text-primary hover:bg-muted/50'"
+          >
             <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v10a2 2 0 002 2h8a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-3 7h3m-3 4h3m-6-4h.01M9 16h.01"/>
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"/>
             </svg>
             Clientes
-          </button>
+          </NuxtLink>
           
-          <button class="flex items-center px-3 py-2 rounded-md text-sm font-medium text-foreground hover:text-primary hover:bg-muted/50 transition-colors">
+          <NuxtLink 
+            to="/agendamentos"
+            class="flex items-center px-4 py-2 rounded-lg text-sm font-medium transition-colors"
+            :class="$route.path === '/agendamentos' 
+              ? 'bg-primary text-primary-foreground shadow-sm' 
+              : 'text-foreground hover:text-primary hover:bg-muted/50'"
+          >
             <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.746 0 3.332.477 4.5 1.253v13C19.832 18.477 18.246 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"/>
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/>
             </svg>
-            Cardápio
-          </button>
-          
-          <button class="flex items-center px-3 py-2 rounded-md text-sm font-medium text-foreground hover:text-primary hover:bg-muted/50 transition-colors">
-            <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"/>
-            </svg>
-            Relatórios
-          </button>
-          
-          <button class="flex items-center px-3 py-2 rounded-md text-sm font-medium text-foreground hover:text-primary hover:bg-muted/50 transition-colors">
-            <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"/>
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/>
-            </svg>
-            Configurações
-          </button>
+            Agendamentos
+          </NuxtLink>
         </nav>
 
-        <!-- Área do usuário e logout -->
-        <div class="flex items-center space-x-4">
+        <!-- Área direita: Tema + User + Logout -->
+        <div class="flex items-center space-x-3">
+          <!-- Alternador de tema -->
+          <ThemeToggle />
+
           <!-- Menu mobile -->
           <div class="md:hidden">
-            <button @click="mobileMenuOpen = !mobileMenuOpen" class="inline-flex items-center justify-center p-2 rounded-md text-muted-foreground hover:text-foreground hover:bg-muted/50 transition-colors">
+            <button 
+              @click="mobileMenuOpen = !mobileMenuOpen" 
+              class="inline-flex items-center justify-center p-2 rounded-md text-muted-foreground hover:text-foreground hover:bg-muted/50 transition-colors"
+            >
               <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path v-if="!mobileMenuOpen" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/>
                 <path v-else stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>
@@ -70,54 +78,63 @@
           </div>
 
           <!-- Botão de logout -->
-          <button @click="handleLogout" class="flex items-center px-3 py-2 rounded-md text-sm font-medium text-gray-400 hover:text-destructive hover:bg-destructive/10 transition-colors">
-            <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <button 
+            @click="handleLogout" 
+            class="flex items-center px-3 py-2 rounded-lg text-sm font-medium text-muted-foreground hover:text-destructive hover:bg-destructive/10 transition-colors"
+            title="Sair"
+          >
+            <svg class="w-5 h-5 sm:mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"/>
             </svg>
-            <span class="hidden sm:block">Sair</span>
+            <span class="hidden sm:inline">Sair</span>
           </button>
         </div>
       </div>
 
       <!-- Menu mobile expandido -->
-      <div v-if="mobileMenuOpen" class="md:hidden border-t border-border mt-2 pt-2 pb-3">
+      <div v-if="mobileMenuOpen" class="md:hidden border-t border-border py-3">
         <div class="space-y-1">
-          <button class="flex items-center w-full px-3 py-2 rounded-md text-base font-medium text-foreground hover:text-primary hover:bg-muted/50 transition-colors">
+          <NuxtLink 
+            to="/"
+            @click="mobileMenuOpen = false"
+            class="flex items-center w-full px-3 py-2 rounded-lg text-base font-medium transition-colors"
+            :class="$route.path === '/' 
+              ? 'bg-primary text-primary-foreground' 
+              : 'text-foreground hover:text-primary hover:bg-muted/50'"
+          >
             <svg class="w-5 h-5 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 7v10a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2H5a2 2 0 00-2-2z"/>
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 5a2 2 0 012-2h4a2 2 0 012 2v0H8v0z"/>
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"/>
             </svg>
             Dashboard
-          </button>
+          </NuxtLink>
           
-          <button class="flex items-center w-full px-3 py-2 rounded-md text-base font-medium text-foreground hover:text-primary hover:bg-muted/50 transition-colors">
+          <NuxtLink 
+            to="/clientes"
+            @click="mobileMenuOpen = false"
+            class="flex items-center w-full px-3 py-2 rounded-lg text-base font-medium transition-colors"
+            :class="$route.path === '/clientes' 
+              ? 'bg-primary text-primary-foreground' 
+              : 'text-foreground hover:text-primary hover:bg-muted/50'"
+          >
             <svg class="w-5 h-5 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v10a2 2 0 002 2h8a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-3 7h3m-3 4h3m-6-4h.01M9 16h.01"/>
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"/>
             </svg>
             Clientes
-          </button>
+          </NuxtLink>
           
-          <button class="flex items-center w-full px-3 py-2 rounded-md text-base font-medium text-foreground hover:text-primary hover:bg-muted/50 transition-colors">
+          <NuxtLink 
+            to="/agendamentos"
+            @click="mobileMenuOpen = false"
+            class="flex items-center w-full px-3 py-2 rounded-lg text-base font-medium transition-colors"
+            :class="$route.path === '/agendamentos' 
+              ? 'bg-primary text-primary-foreground' 
+              : 'text-foreground hover:text-primary hover:bg-muted/50'"
+          >
             <svg class="w-5 h-5 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.746 0 3.332.477 4.5 1.253v13C19.832 18.477 18.246 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"/>
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/>
             </svg>
-            Cardápio
-          </button>
-          
-          <button class="flex items-center w-full px-3 py-2 rounded-md text-base font-medium text-foreground hover:text-primary hover:bg-muted/50 transition-colors">
-            <svg class="w-5 h-5 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"/>
-            </svg>
-            Relatórios
-          </button>
-          
-          <button class="flex items-center w-full px-3 py-2 rounded-md text-base font-medium text-foreground hover:text-primary hover:bg-muted/50 transition-colors">
-            <svg class="w-5 h-5 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"/>
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/>
-            </svg>
-            Configurações
-          </button>
+            Agendamentos
+          </NuxtLink>
         </div>
       </div>
     </div>
@@ -125,21 +142,31 @@
 </template>
 
 <script setup lang="ts">
-
-const { signOut } = useAuth()
+const mobileMenuOpen = ref(false)
 let toast: any
+let signOut: any
+
 onMounted(async () => {
   toast = await useToastSafe()
+  
+  // Inicializa auth apenas no cliente
+  if (process.client) {
+    const auth = useAuth()
+    signOut = auth.signOut
+  }
 })
-const mobileMenuOpen = ref(false)
 
 const handleLogout = async () => {
+  if (!process.client) return
+  
   try {
-    await signOut()
+    if (signOut) {
+      await signOut()
+    }
     toast?.success('Deslogado com sucesso!')
-    // Redireciona para a página de login após logout
     await navigateTo('/login')
   } catch (error) {
+    console.error('Erro ao fazer logout:', error)
     toast?.error('Erro ao fazer logout')
   }
 }

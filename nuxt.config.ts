@@ -11,6 +11,23 @@ export default defineNuxtConfig({
     cssPath: resolvePath(__dirname, 'assets/css/tailwind.css')
   },
   css: ['@fortawesome/fontawesome-svg-core/styles.css'],
+  app: {
+    head: {
+      script: [
+        {
+          children: `
+            // Previne FOUC (Flash of Unstyled Content) ao carregar a página
+            (function() {
+              const theme = localStorage.getItem('theme') || 
+                (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
+              document.documentElement.classList.add(theme);
+            })();
+          `,
+          type: 'text/javascript'
+        }
+      ]
+    }
+  },
   runtimeConfig: {
     public: {
       supabaseUrl:

@@ -2,9 +2,122 @@
 @tailwind components;
 @tailwind utilities;
 
+/* Scrollbar customizada */
+@layer utilities {
+  .scrollbar-thin::-webkit-scrollbar {
+    width: 8px;
+  }
+
+  .scrollbar-thin::-webkit-scrollbar-track {
+    background: transparent;
+  }
+
+  .scrollbar-thin::-webkit-scrollbar-thumb {
+    background-color: rgb(var(--primary) / 0.2);
+    border-radius: 9999px;
+    border: 2px solid transparent;
+    background-clip: padding-box;
+  }
+
+  .scrollbar-thin:hover::-webkit-scrollbar-thumb {
+    background-color: rgb(var(--primary) / 0.4);
+  }
+
+  .scrollbar-thin::-webkit-scrollbar-thumb:hover {
+    background-color: rgb(var(--primary) / 0.6);
+  }
+
+  /* Firefox */
+  .scrollbar-thin {
+    scrollbar-width: thin;
+    scrollbar-color: rgb(var(--primary) / 0.2) transparent;
+  }
+}
+
 @layer base {
+  :root {
+    /* Light Mode Colors */
+    --background: 249 250 251; /* #F9FAFB - Fundo off-white suave */
+    --foreground: 17 24 39; /* #111827 - Texto escuro */
+
+    /* Primary - mantém o roxo vibrante */
+    --primary: 129 98 255; /* #8162FF */
+    --primary-foreground: 255 255 255; /* #FFFFFF */
+
+    /* Secondary - branco para inputs e cards */
+    --secondary: 255 255 255; /* #FFFFFF */
+    --secondary-foreground: 17 24 39; /* #111827 */
+
+    /* Accent - roxo claro/lavanda */
+    --accent: 243 240 249; /* #F3F0F9 */
+    --accent-foreground: 91 33 182; /* #5B21B6 - roxo escuro para contraste */
+
+    /* Muted - cinza médio */
+    --muted: 243 244 246; /* #F3F4F6 */
+    --muted-foreground: 107 114 128; /* #6B7280 */
+
+    /* Card & Popover */
+    --card: 255 255 255; /* #FFFFFF */
+    --card-foreground: 17 24 39; /* #111827 */
+    --popover: 255 255 255; /* #FFFFFF */
+    --popover-foreground: 17 24 39; /* #111827 */
+
+    /* Destructive - vermelho para ações destrutivas */
+    --destructive: 239 68 68; /* #EF4444 */
+    --destructive-foreground: 255 255 255; /* #FFFFFF */
+    --destructive-surface: 254 242 242; /* #FEF2F2 */
+
+    /* UI Primitives */
+    --border: 229 231 235; /* #E5E7EB */
+    --input: 229 231 235; /* #E5E7EB */
+    --ring: 129 98 255; /* #8162FF */
+
+    --white: 255 255 255; /* #FFFFFF */
+  }
+
+  .dark {
+    /* Dark Mode Colors - cores originais */
+    --background: 20 21 24; /* #141518 */
+    --foreground: 255 255 255; /* #FFFFFF */
+
+    --primary: 129 98 255; /* #8162FF */
+    --primary-foreground: 255 255 255; /* #FFFFFF */
+
+    --secondary: 26 27 31; /* #1A1B1F */
+    --secondary-foreground: 255 255 255; /* #FFFFFF */
+
+    --accent: 34 28 61; /* #221C3D */
+    --accent-foreground: 255 255 255; /* #FFFFFF */
+
+    --muted: 38 39 43; /* #26272B */
+    --muted-foreground: 78 82 91; /* #4E525B */
+
+    --card: 26 27 31; /* #1A1B1F */
+    --card-foreground: 255 255 255; /* #FFFFFF */
+    --popover: 26 27 31; /* #1A1B1F */
+    --popover-foreground: 255 255 255; /* #FFFFFF */
+
+    --destructive: 239 68 68; /* #EF4444 */
+    --destructive-foreground: 255 255 255; /* #FFFFFF */
+    --destructive-surface: 47 31 31; /* #2F1F1F */
+
+    --border: 38 39 43; /* #26272B */
+    --input: 38 39 43; /* #26272B */
+    --ring: 129 98 255; /* #8162FF */
+
+    --white: 255 255 255; /* #FFFFFF */
+  }
+
   html, body, #__nuxt {
     height: 100%;
+  }
+
+  * {
+    @apply border-border;
+  }
+
+  body {
+    @apply bg-background text-foreground;
   }
 }
 

@@ -11,7 +11,7 @@ export default defineNuxtPlugin(async () => {
     const loading = useState<boolean>('auth_loading', () => true)
     
     try {
-      // Aguardar um pouco para garantir que Supabase está disponível (reduzido)
+      // Aguardar um pouco para garantir que Supabase está disponível
       await new Promise(resolve => setTimeout(resolve, 200))
       
       const nuxtApp = useNuxtApp()
@@ -30,14 +30,30 @@ export default defineNuxtPlugin(async () => {
       
       if (error) {
         console.error('[Auth Plugin] Erro ao obter sessão:', error)
+        // Limpar estados em caso de erro
+        user.value = null
+        session.value = null
       } else {
         console.log('[Auth Plugin] Sessão obtida:', { hasSession: !!data.session })
         
         // Atualizar o estado com a sessão atual
         if (data.session) {
-          user.value = data.session.user
-          session.value = data.session
-          console.log('[Auth Plugin] Usuário restaurado:', data.session.user.email)
+          // Verificar se a sessão é válida (não expirada)
+          const expiresAt = data.session.expires_at
+          const now = Math.floor(Date.now() / 1000)
+          
+          if (expiresAt && expiresAt > now) {
+            user.value = data.session.user
+            session.value = data.session
+            console.log('[Auth Plugin] Usuário restaurado:', data.session.user.email)
+          } else {
+            // Sessão expirada - limpar
+            console.log('[Auth Plugin] Sessão expirada, limpando estados')
+            user.value = null
+            session.value = null
+            // Tentar fazer signOut para limpar localStorage
+            await supabase.auth.signOut()
+          }
         } else {
           user.value = null
           session.value = null
@@ -48,14 +64,29 @@ export default defineNuxtPlugin(async () => {
       loading.value = false
       
       // Escutar mudanças de autenticação
-      supabase.auth.onAuthStateChange((event: any, newSession: Session | null) => {
-        console.log('[Auth Plugin] Auth state changed:', event)
-        user.value = newSession?.user ?? null
-        session.value = newSession
-        console.log('[Auth Plugin] Estado atualizado:', { 
-          hasUser: !!user.value, 
-          email: user.value?.email 
-        })
+      supabase.auth.onAuthStateChange(async (event: any, newSession: Session | null) => {
+        console.log('[Auth Plugin] Auth state changed:', event, { hasSession: !!newSession })
+        
+        // Tratamento específico por tipo de evento
+        if (event === 'SIGNED_OUT' || event === 'TOKEN_REFRESHED' && !newSession) {
+          // Limpar estados quando logout ou falha no refresh
+          user.value = null
+          session.value = null
+          console.log('[Auth Plugin] Sessão removida/expirada')
+        } else if (event === 'SIGNED_IN' || event === 'TOKEN_REFRESHED') {
+          // Atualizar estados em login ou refresh bem-sucedido
+          user.value = newSession?.user ?? null
+          session.value = newSession
+          console.log('[Auth Plugin] Sessão atualizada:', { 
+            hasUser: !!user.value, 
+            email: user.value?.email 
+          })
+        } else if (event === 'USER_UPDATED') {
+          // Atualizar apenas o usuário
+          if (newSession?.user) {
+            user.value = newSession.user
+          }
+        }
       })
       
       console.log('[Auth Plugin] Inicialização concluída')

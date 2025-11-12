@@ -1,13 +1,13 @@
 <template>
   <button
     @click="toggleTheme"
-    class="p-2 rounded-lg border border-border/50 bg-secondary/50 hover:bg-secondary transition-colors"
+    class="p-2 rounded-lg border border-border/50 bg-secondary/50 hover:bg-secondary transition-colors group"
     :title="isDark ? 'Mudar para tema claro' : 'Mudar para tema escuro'"
   >
-    <!-- Ícone de sol (tema claro) -->
+    <!-- Ícone de sol (tema claro) - mostra quando está no dark mode -->
     <svg
       v-if="isDark"
-      class="w-5 h-5 text-foreground/70"
+      class="w-5 h-5 text-muted-foreground group-hover:text-foreground transition-colors"
       fill="none"
       stroke="currentColor"
       viewBox="0 0 24 24"
@@ -20,10 +20,10 @@
       />
     </svg>
     
-    <!-- Ícone de lua (tema escuro) -->
+    <!-- Ícone de lua (tema escuro) - mostra quando está no light mode -->
     <svg
       v-else
-      class="w-5 h-5 text-foreground/70"
+      class="w-5 h-5 text-muted-foreground group-hover:text-foreground transition-colors"
       fill="none"
       stroke="currentColor"
       viewBox="0 0 24 24"
@@ -39,43 +39,5 @@
 </template>
 
 <script setup lang="ts">
-import { ref, onMounted } from 'vue'
-
-const isDark = ref(true) // Inicia com tema escuro (padrão atual)
-
-const toggleTheme = () => {
-  isDark.value = !isDark.value
-  
-  if (process.client) {
-    const html = document.documentElement
-    
-    if (isDark.value) {
-      html.classList.add('dark')
-      html.classList.remove('light')
-      localStorage.setItem('theme', 'dark')
-    } else {
-      html.classList.add('light')
-      html.classList.remove('dark')
-      localStorage.setItem('theme', 'light')
-    }
-  }
-}
-
-onMounted(() => {
-  if (process.client) {
-    // Verifica o tema salvo no localStorage
-    const savedTheme = localStorage.getItem('theme')
-    const html = document.documentElement
-    
-    if (savedTheme === 'light') {
-      isDark.value = false
-      html.classList.add('light')
-      html.classList.remove('dark')
-    } else {
-      isDark.value = true
-      html.classList.add('dark')
-      html.classList.remove('light')
-    }
-  }
-})
+const { isDark, toggleTheme } = useTheme()
 </script>

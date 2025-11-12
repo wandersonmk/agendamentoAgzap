@@ -2,29 +2,31 @@
   <div class="max-w-7xl mx-auto">
     <!-- Cards de métricas -->
       <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
-        <!-- Card Tickets Hoje -->
+        <!-- Card Agendamentos Hoje -->
         <div class="relative bg-gradient-to-br from-card via-blue-950/10 to-card text-card-foreground rounded-lg border border-blue-800/20 shadow-sm hover:shadow-md hover:shadow-blue-500/10 transition-all duration-300 p-6 group overflow-hidden">
           <!-- Efeito de brilho sutil -->
           <div class="absolute inset-0 bg-gradient-to-r from-transparent via-blue-500/8 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
           <div class="relative z-10 flex items-center justify-between">
             <div>
-              <p class="text-sm text-gray-400 mb-1">Tickets Hoje</p>
+              <p class="text-sm text-gray-400 mb-1">Agendamentos Hoje</p>
               <p class="text-2xl font-bold text-foreground">{{ metrics.clientesHoje }}</p>
               <p class="text-xs text-blue-600 mt-1">até agora</p>
             </div>
             <div class="w-12 h-12 bg-gradient-to-br from-blue-500 to-blue-600 rounded-lg flex items-center justify-center shadow-lg">
-              <font-awesome-icon :icon="['fas', 'ticket']" class="text-white text-2xl drop-shadow-lg" />
+              <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/>
+              </svg>
             </div>
           </div>
         </div>
 
-        <!-- Card Tickets na Semana -->
+        <!-- Card Agendamentos na Semana -->
         <div class="relative bg-gradient-to-br from-card via-emerald-950/10 to-card text-card-foreground rounded-lg border border-emerald-800/20 shadow-sm hover:shadow-md hover:shadow-emerald-500/10 transition-all duration-300 p-6 group overflow-hidden">
           <!-- Efeito de brilho sutil -->
           <div class="absolute inset-0 bg-gradient-to-r from-transparent via-emerald-500/8 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
           <div class="relative z-10 flex items-center justify-between">
             <div>
-              <p class="text-sm text-gray-400 mb-1">Tickets na Semana</p>
+              <p class="text-sm text-gray-400 mb-1">Agendamentos na Semana</p>
               <p class="text-2xl font-bold text-foreground">{{ metrics.clientesNovos }}</p>
               <p class="text-xs text-emerald-600 mt-1">nos últimos 7 dias</p>
             </div>
@@ -36,34 +38,38 @@
           </div>
         </div>
 
-        <!-- Card Tickets esse mês -->
+        <!-- Card Agendamentos esse mês -->
         <div class="relative bg-gradient-to-br from-card via-amber-950/10 to-card text-card-foreground rounded-lg border border-amber-800/20 shadow-sm hover:shadow-md hover:shadow-amber-500/10 transition-all duration-300 p-6 group overflow-hidden">
           <!-- Efeito de brilho sutil -->
           <div class="absolute inset-0 bg-gradient-to-r from-transparent via-amber-500/8 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
           <div class="relative z-10 flex items-center justify-between">
             <div>
-              <p class="text-sm text-gray-400 mb-1">Tickets esse mês</p>
+              <p class="text-sm text-gray-400 mb-1">Agendamentos esse mês</p>
               <p class="text-2xl font-bold text-foreground">{{ metrics.clientesVencendo }}</p>
               <p class="text-xs text-green-600 mt-1">este mês</p>
             </div>
             <div class="w-12 h-12 bg-gradient-to-br from-amber-500 to-amber-600 rounded-lg flex items-center justify-center shadow-lg">
-              <font-awesome-icon :icon="['fas', 'ticket']" class="text-white text-2xl" />
+              <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/>
+              </svg>
             </div>
           </div>
         </div>
 
-        <!-- Card Tickets Totais -->
+        <!-- Card Total de Agendamentos -->
         <div class="relative bg-gradient-to-br from-card via-indigo-950/10 to-card text-card-foreground rounded-lg border border-indigo-800/20 shadow-sm hover:shadow-md hover:shadow-indigo-500/10 transition-all duration-300 p-6 group overflow-hidden">
           <!-- Efeito de brilho sutil -->
           <div class="absolute inset-0 bg-gradient-to-r from-transparent via-indigo-500/8 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
           <div class="relative z-10 flex items-center justify-between">
             <div>
-              <p class="text-sm text-gray-400 mb-1">Total de Clientes</p>
+              <p class="text-sm text-gray-400 mb-1">Total de Agendamentos</p>
               <p class="text-2xl font-bold text-foreground">{{ metrics.ticketsTotais.toLocaleString('pt-BR') }}</p>
-              <p class="text-xs text-indigo-600 mt-1">total de clientes</p>
+              <p class="text-xs text-indigo-600 mt-1">desde o início</p>
             </div>
             <div class="w-12 h-12 bg-gradient-to-br from-indigo-500 to-indigo-600 rounded-lg flex items-center justify-center shadow-lg">
-              <font-awesome-icon :icon="['fas', 'users']" class="text-white text-2xl" />
+              <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-3 7h3m-3 4h3m-6-4h.01M9 16h.01"/>
+              </svg>
             </div>
           </div>
         </div>
@@ -74,9 +80,9 @@
   <!-- Gráfico de Performance Circular -->
   <CircularProgress :total="metrics.ticketsTotais" />
 
-      <!-- Gráfico de Vendas Mensais -->
+      <!-- Gráfico de Agendamentos Mensais -->
       <div class="bg-card text-card-foreground rounded-lg border border-border shadow-sm p-6">
-  <h3 class="text-lg font-semibold text-foreground mb-4">Tickets dos Últimos Meses</h3>
+  <h3 class="text-lg font-semibold text-foreground mb-4">Agendamentos dos Últimos Meses</h3>
         <div class="relative h-64">
           <canvas ref="lineChartRef"></canvas>
         </div>
@@ -223,24 +229,27 @@ async function createLineChart() {
   const ctx = lineChartRef.value.getContext('2d')
   if (!ctx) return
 
+  // Verificar se está em dark mode
+  const isDarkMode = document.documentElement.classList.contains('dark')
+  
   new Chart(ctx, {
     type: 'line',
     data: {
       labels,
       datasets: [{
-        label: 'Tickets',
+        label: 'Agendamentos',
         data,
-        borderColor: '#10B981',
-        backgroundColor: 'rgba(16, 185, 129, 0.1)',
+        borderColor: '#8162FF',
+        backgroundColor: 'rgba(129, 98, 255, 0.1)',
         borderWidth: 3,
         fill: true,
         tension: 0.4,
-        pointBackgroundColor: '#10B981',
+        pointBackgroundColor: '#8162FF',
         pointBorderColor: '#FFFFFF',
         pointBorderWidth: 2,
         pointRadius: 5,
         pointHoverRadius: 7,
-        pointHoverBackgroundColor: '#059669',
+        pointHoverBackgroundColor: '#6B4FE8',
         pointHoverBorderColor: '#FFFFFF'
       }]
     },
@@ -250,7 +259,7 @@ async function createLineChart() {
       plugins: {
         legend: {
           labels: {
-            color: '#F3F4F6',
+            color: isDarkMode ? '#F3F4F6' : '#1F2937',
             font: {
               size: 12,
               weight: 'bold'
@@ -258,14 +267,14 @@ async function createLineChart() {
           }
         },
         tooltip: {
-          backgroundColor: '#1F2937',
-          titleColor: '#F3F4F6',
-          bodyColor: '#F3F4F6',
-          borderColor: '#374151',
+          backgroundColor: isDarkMode ? '#1F2937' : '#FFFFFF',
+          titleColor: isDarkMode ? '#F3F4F6' : '#1F2937',
+          bodyColor: isDarkMode ? '#F3F4F6' : '#1F2937',
+          borderColor: isDarkMode ? '#374151' : '#E5E7EB',
           borderWidth: 1,
           callbacks: {
             label: function(context) {
-              return 'Tickets: ' + context.parsed.y.toLocaleString('pt-BR')
+              return 'Agendamentos: ' + context.parsed.y.toLocaleString('pt-BR')
             }
           }
         }
@@ -273,27 +282,27 @@ async function createLineChart() {
       scales: {
         x: {
           ticks: {
-            color: '#9CA3AF',
+            color: isDarkMode ? '#9CA3AF' : '#4B5563',
             font: {
               size: 11
             }
           },
           grid: {
-            color: '#374151'
+            color: isDarkMode ? '#374151' : '#E5E7EB'
           }
         },
         y: {
           ticks: {
-            color: '#9CA3AF',
+            color: isDarkMode ? '#9CA3AF' : '#4B5563',
             font: {
               size: 11
             },
             callback: function(value) {
-              return value + ' tickets'
+              return value + ' agendamentos'
             }
           },
           grid: {
-            color: '#374151'
+            color: isDarkMode ? '#374151' : '#E5E7EB'
           }
         }
       }

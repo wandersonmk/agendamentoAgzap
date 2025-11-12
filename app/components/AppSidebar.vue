@@ -103,6 +103,14 @@
 
       <!-- Seção inferior com informações do usuário e botão sair -->
       <div class="mt-auto">
+        <!-- Alternador de tema -->
+        <div class="px-4 py-3 border-t border-border">
+          <div class="flex items-center justify-between">
+            <span class="text-sm text-muted-foreground">Tema</span>
+            <ThemeToggle />
+          </div>
+        </div>
+        
         <!-- Informações do usuário -->
         <div v-if="isLoggedIn" class="p-3 border-t border-border bg-muted/30">
           <div class="flex items-center space-x-3 mb-3">
@@ -250,6 +258,14 @@
 
       <!-- Seção inferior com informações do usuário (mobile) -->
       <div class="mt-auto">
+        <!-- Alternador de tema -->
+        <div class="px-4 py-3 border-t border-border">
+          <div class="flex items-center justify-between">
+            <span class="text-sm text-muted-foreground">Tema</span>
+            <ThemeToggle />
+          </div>
+        </div>
+        
         <!-- Informações do usuário -->
         <div v-if="isLoggedIn" class="p-3 border-t border-border bg-muted/30">
           <div class="flex items-center space-x-3">

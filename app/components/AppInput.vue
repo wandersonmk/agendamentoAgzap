@@ -72,7 +72,7 @@ function togglePasswordVisibility() {
       v-if="isPasswordField"
       type="button"
       @click="togglePasswordVisibility"
-      class="absolute inset-y-0 right-0 flex items-center pr-3 text-gray-400 hover:text-gray-600 focus:outline-none"
+      class="absolute inset-y-0 right-0 flex items-center pr-3 text-muted-foreground hover:text-foreground focus:outline-none transition-colors"
       :disabled="props.disabled"
     >
       <!-- Ícone de olho fechado -->
@@ -104,26 +104,26 @@ function togglePasswordVisibility() {
 </template>
 
 <style scoped>
-/* Força fundo escuro em todos os estados, incluindo autocomplete */
+/* Força fundo correto em todos os estados, incluindo autocomplete */
 input {
-  background-color: hsl(var(--secondary)) !important;
+  background-color: rgb(var(--secondary)) !important;
 }
 
 input:hover,
 input:focus,
 input:active {
-  background-color: hsl(var(--secondary)) !important;
+  background-color: rgb(var(--secondary)) !important;
 }
 
-/* Força fundo escuro no autocomplete do webkit (Chrome, Safari, Edge) */
+/* Força fundo correto no autocomplete do webkit (Chrome, Safari, Edge) */
 input:-webkit-autofill,
 input:-webkit-autofill:hover,
 input:-webkit-autofill:focus,
 input:-webkit-autofill:active {
-  -webkit-box-shadow: 0 0 0 1000px hsl(var(--secondary)) inset !important;
-  box-shadow: 0 0 0 1000px hsl(var(--secondary)) inset !important;
-  -webkit-text-fill-color: hsl(var(--foreground)) !important;
-  background-color: hsl(var(--secondary)) !important;
+  -webkit-box-shadow: 0 0 0 1000px rgb(var(--secondary)) inset !important;
+  box-shadow: 0 0 0 1000px rgb(var(--secondary)) inset !important;
+  -webkit-text-fill-color: rgb(var(--foreground)) !important;
+  background-color: rgb(var(--secondary)) !important;
 }
 </style>
 
