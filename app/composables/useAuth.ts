@@ -39,36 +39,21 @@ export function useAuth() {
     isLoading.value = true
     errorMessage.value = null
     try {
-      // 1. Criar autenticação no Supabase
+      // 1. Criar autenticação no Supabase com metadados
       const { data, error } = await supabase.auth.signUp({
         email,
-        password
+        password,
+        options: {
+          data: {
+            name: name,
+            company_name: companyName
+          }
+        }
       })
       if (error) throw error
 
-      // 2. Criar empresa
-      const { data: empresaData, error: empresaError } = await supabase
-        .from('empresas')
-        .insert({
-          nome: companyName,
-          email: email
-        })
-        .select()
-        .single()
-
-      if (empresaError) throw empresaError
-
-      // 3. Criar usuário associado à empresa
-      const { error: usuarioError } = await supabase.from('usuarios').insert({
-        id: data.user?.id, // ID do auth.users para passar na política RLS
-        nome: name,
-        empresa_id: empresaData.id,
-        email: email,
-        perfil: 'admin'
-      })
-
-      if (usuarioError) throw usuarioError
-
+      // A criação da empresa e usuário será feita após confirmação do email
+      // via trigger no banco ou no primeiro login
       return data.user
     } catch (err: any) {
       errorMessage.value = String(err?.message || err)
